@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/dianatravelsite/static/css/main.463b30f4.css",
-    "main.js": "/dianatravelsite/static/js/main.c7d21257.js",
+    "main.js": "/dianatravelsite/static/js/main.883e29fe.js",
     "static/js/453.6e4f956a.chunk.js": "/dianatravelsite/static/js/453.6e4f956a.chunk.js",
     "index.html": "/dianatravelsite/index.html",
     "main.463b30f4.css.map": "/dianatravelsite/static/css/main.463b30f4.css.map",
-    "main.c7d21257.js.map": "/dianatravelsite/static/js/main.c7d21257.js.map",
+    "main.883e29fe.js.map": "/dianatravelsite/static/js/main.883e29fe.js.map",
     "453.6e4f956a.chunk.js.map": "/dianatravelsite/static/js/453.6e4f956a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.463b30f4.css",
-    "static/js/main.c7d21257.js"
+    "static/js/main.883e29fe.js"
   ]
 }
