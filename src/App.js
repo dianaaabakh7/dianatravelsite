@@ -1,67 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 
-const Home = () => (
-  <div className="card">
-    <h2>Главная</h2>
-    <p>Проект адаптирован под мобильные устройства (7.2)</p>
-  </div>
-);
+// --- Задание 9.1 и 9.2: Компонент с загрузкой данных из API ---
+const Home = () => {
+  const [users, setUsers] = useState([]);
 
-const About = () => (
-  <div className="card">
-    <h2>О нас</h2>
-    <p>Мы используем Flexbox для сетки (7.1)</p>
-  </div>
-);
-
-// --- НОВОЕ: Страница Контакты с валидацией (Задание 8.1) ---
-const Contacts = () => {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-
-  const validateAndSend = (e) => {
-    e.preventDefault();
-    if (!email.includes('@')) {
-      setError('Введите корректный Email с символом @');
-    } else {
-      setError('');
-      alert('Сообщение отправлено!');
-    }
-  };
+  useEffect(() => {
+    // Имитируем запрос к API для получения списка пользователей
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(data => setUsers(data.slice(0, 5))); // Берем только первых 5
+  }, []);
 
   return (
     <div className="card">
-      <h2>Контакты (8.1)</h2>
-      <form onSubmit={validateAndSend}>
-        <input
-          className={error ? 'input-error' : ''}
-          placeholder="Ваш Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {error && <p className="error-text">{error}</p>}
-        <button type="submit">Отправить</button>
-      </form>
+      <h2>Главная (Загрузка API)</h2>
+      <ul style={{ textAlign: 'left' }}>
+        {users.map(user => (
+          <li key={user.id}>{user.name} — {user.email}</li>
+        ))}
+      </ul>
     </div>
   );
 };
 
+// --- Задание 10.1 и 10.2: Компонент со списком задач ---
+const Tasks = () => {
+  const [items, setItems] = useState(['Изучить React', 'Сдать проект']);
+  const [newItem, setNewItem] = useState('');
+
+  const addItem = () => {
+    if (newItem.trim()) {
+      setItems([...items, newItem]);
+      setNewItem('');
+    }
+  };
+
+  const removeItem = (index) => {
+    setItems(items.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div className="card">
+      <h2>Задания (Списки и удаление)</h2>
+      <div style={{ marginBottom: '15px' }}>
+        <input
+          value={newItem}
+          onChange={(e) => setNewItem(e.target.value)}
+          placeholder="Что нужно сделать?"
+        />
+        <button onClick={addItem}>Добавить</button>
+      </div>
+      <ul style={{ listStyle: 'none', padding: 0 }}>
+        {items.map((item, index) => (
+          <li key={index} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
+            {item}
+            <button onClick={() => removeItem(index)} style={{ backgroundColor: 'red', color: 'white', border: 'none', cursor: 'pointer' }}>Удалить</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+// --- Основной компонент с Навигацией и Маршрутами ---
 export default function App() {
   return (
     <Router>
       <div className="App">
-        <nav>
-          <Link to="/">Главная</Link>
-          <Link to="/about">О нас</Link>
-          <Link to="/contacts">Контакты</Link>
+        {/* Шаг 1: Обновленная навигация (меню) */}
+        <nav style={{ padding: '20px', background: '#f4f4f4', marginBottom: '20px' }}>
+          <Link to="/" style={{ margin: '10px' }}>Главная</Link> |
+          <Link to="/tasks" style={{ margin: '10px' }}>Задания (Lab 10)</Link>
         </nav>
 
         <div className="container">
+          {/* Шаг 2: Добавленные маршруты */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/tasks" element={<Tasks />} />
           </Routes>
         </div>
       </div>
